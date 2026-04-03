@@ -19,6 +19,10 @@ SESSION_COOKIE_AGE = 900
 
 SESSION_SAVE_EVERY_REQUEST = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://owasp.cyprian.dev',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
