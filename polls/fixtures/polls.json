@@ -1,0 +1,398 @@
+[
+  {
+    "model": "polls.poll",
+    "pk": 2,
+    "fields": {
+      "question": "Favorite Linux distro?",
+      "category": "linux"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 5,
+    "fields": {
+      "poll": 2,
+      "choice_text": "Ubuntu",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 6,
+    "fields": {
+      "poll": 2,
+      "choice_text": "Kali Linux",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 7,
+    "fields": {
+      "poll": 2,
+      "choice_text": "Arch Linux",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 8,
+    "fields": {
+      "poll": 2,
+      "choice_text": "Fedora",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 3,
+    "fields": {
+      "question": "Best cybersecurity learning platform?",
+      "category": "security"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 9,
+    "fields": {
+      "poll": 3,
+      "choice_text": "TryHackMe",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 10,
+    "fields": {
+      "poll": 3,
+      "choice_text": "Hack The Box",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 11,
+    "fields": {
+      "poll": 3,
+      "choice_text": "PortSwigger Academy",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 12,
+    "fields": {
+      "poll": 3,
+      "choice_text": "OverTheWire",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 4,
+    "fields": {
+      "question": "Most useful security skill?",
+      "category": "security"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 13,
+    "fields": {
+      "poll": 4,
+      "choice_text": "Web exploitation",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 14,
+    "fields": {
+      "poll": 4,
+      "choice_text": "Networking",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 15,
+    "fields": {
+      "poll": 4,
+      "choice_text": "Cryptography",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 16,
+    "fields": {
+      "poll": 4,
+      "choice_text": "Reverse engineering",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 5,
+    "fields": {
+      "question": "Favorite AI tool?",
+      "category": "ai"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 17,
+    "fields": {
+      "poll": 5,
+      "choice_text": "ChatGPT",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 18,
+    "fields": {
+      "poll": 5,
+      "choice_text": "Claude",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 19,
+    "fields": {
+      "poll": 5,
+      "choice_text": "Gemini",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 20,
+    "fields": {
+      "poll": 5,
+      "choice_text": "Copilot",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 6,
+    "fields": {
+      "question": "Best AI application area?",
+      "category": "ai"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 21,
+    "fields": {
+      "poll": 6,
+      "choice_text": "Automation",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 22,
+    "fields": {
+      "poll": 6,
+      "choice_text": "Cybersecurity",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 23,
+    "fields": {
+      "poll": 6,
+      "choice_text": "Healthcare",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 24,
+    "fields": {
+      "poll": 6,
+      "choice_text": "Finance",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 7,
+    "fields": {
+      "question": "Best database?",
+      "category": "databases"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 25,
+    "fields": {
+      "poll": 7,
+      "choice_text": "PostgreSQL",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 26,
+    "fields": {
+      "poll": 7,
+      "choice_text": "MySQL",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 27,
+    "fields": {
+      "poll": 7,
+      "choice_text": "SQLite",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 28,
+    "fields": {
+      "poll": 7,
+      "choice_text": "MongoDB",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 8,
+    "fields": {
+      "question": "Best backend framework?",
+      "category": "backend"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 29,
+    "fields": {
+      "poll": 8,
+      "choice_text": "Django",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 30,
+    "fields": {
+      "poll": 8,
+      "choice_text": "Flask",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 31,
+    "fields": {
+      "poll": 8,
+      "choice_text": "FastAPI",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 32,
+    "fields": {
+      "poll": 8,
+      "choice_text": "Spring",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 9,
+    "fields": {
+      "question": "Preferred authentication method?",
+      "category": "security"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 33,
+    "fields": {
+      "poll": 9,
+      "choice_text": "Password",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 34,
+    "fields": {
+      "poll": 9,
+      "choice_text": "OAuth",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 35,
+    "fields": {
+      "poll": 9,
+      "choice_text": "SSO",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 36,
+    "fields": {
+      "poll": 9,
+      "choice_text": "Biometrics",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.poll",
+    "pk": 10,
+    "fields": {
+      "question": "Best way to learn ethical hacking?",
+      "category": "security"
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 37,
+    "fields": {
+      "poll": 10,
+      "choice_text": "Practice labs",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 38,
+    "fields": {
+      "poll": 10,
+      "choice_text": "Books",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 39,
+    "fields": {
+      "poll": 10,
+      "choice_text": "Videos",
+      "votes": 0
+    }
+  },
+  {
+    "model": "polls.choice",
+    "pk": 40,
+    "fields": {
+      "poll": 10,
+      "choice_text": "Mentorship",
+      "votes": 0
+    }
+  }
+]

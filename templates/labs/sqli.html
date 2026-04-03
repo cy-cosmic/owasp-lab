@@ -1,0 +1,219 @@
+{% extends 'labs/base.html' %}
+{% block head %}
+    <style>
+        .page-wrapper {
+            display: flex;
+            flex-direction: column; /* stack form, messages, results */
+            align-items: center; /* horizontal centering */
+            box-sizing: border-box;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            width: 100%;
+            max-width: 400px; /* optional fixed width */
+        }
+
+        .search-container input {
+            flex: 1; /* input takes remaining space */
+        }
+
+        .search-container input,
+        .search-container button {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .search-container input {
+            width: 250px; /* fixed width for input */
+        }
+
+
+        .instructions h2 {
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .instructions p {
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .lab-hint {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border-left: 4px solid #999;
+            font-size: 13px;
+        }
+
+        .lab-hint code {
+            display: block;
+            margin-top: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: wrap;
+            overflow-wrap: anywhere;
+            word-break: normal;
+
+        }
+
+        .hint-note {
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container px-5 mt-2 mb-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <section>
+                    <h5 class="text-white mb-4">A Vulnerable Search Feature</h5>
+
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                        <div class="card-body p-5">
+                            <p class="small color-soft">This search feature supports advanced query patterns and
+                                demonstrates how
+                                dynamic SQL queries can introduce security risks when user input is not handled
+                                safely.</p>
+                            <p class="small color-soft">Specifically, we will use the poll search feature to extract
+                                user account information
+                                from the system's user table.</p>
+                            <div class="lab-hint color-soft">
+                                <strong>Try this query:</strong>
+                                <code>
+                                    ' AND 1=0 UNION SELECT id, username, 'user' FROM auth_user --
+                                </code>
+                            </div>
+                            <p class="hint-note color-soft">Observe how results unrelated to polls may appear.</p>
+                            <div class="page-wrapper">
+                                <div class="search-container my-4">
+                                    <input class="form-control text-white  form-control-sm bg-dark" type="text"
+                                           id="poll-search"
+                                           placeholder="Search polls...">
+                                    <button id="search-btn" class="btn btn-sm btn-light">Search</button>
+                                </div>
+                            </div>
+
+                            <div class="lab-hint">
+                                <strong style="color: #ffffff">Search Results:</strong>
+                                <code id="searchResults"></code>
+                            </div>
+
+                        </div>
+                    </div>
+                    <h5 class="text-white mb-4">SQL Injection Explained</h5>
+
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                        <div class="card-body p-5">
+                            <p class="color-soft">SQL Injection (SQLi) is a vulnerability that occurs when an
+                                application includes
+                                untrusted user input directly in a database query without proper protection.
+                                Instead of being treated strictly as data, the input is interpreted as executable
+                                SQL.</p>
+                            <p class="color-soft">
+                                Attackers can manipulate queries to:
+                            </p>
+                            <ul class="color-soft">
+                                <li>bypass authentication</li>
+                                <li>extract sensitive data</li>
+                                <li>modify database records</li>
+                                <li>delete information</li>
+                                <li>escalate privileges</li>
+                            </ul>
+                            <h6 class="text-white fw-bold mt-4 mb-2">Vulnerable Query Example</h6>
+                            <p>When querying the database, a developer may write such a code block.</p>
+                            <div class="lab-hint">
+                                <code>sql = f"""
+                                    SELECT id, question, category
+                                    FROM polls_poll
+                                    WHERE question LIKE '%{query}%'
+                                    """</code>
+                            </div>
+                            <p class="color-soft my-4">
+                                Because the input is directly inserted into the SQL string, an attacker can inject SQL
+                                syntax, like we did in the search bar. This alters the query structure and allows the
+                                database to return user records
+                                instead of only polls.
+                            </p>
+                            <p class="color-soft mb-4">
+                                Even when passwords are hashed, exposing user data is considered a high severity
+                                vulnerability. The following is a query that will return the password hashes of the
+                                users in this vulnerable system!
+                            </p>
+                            <div class="lab-hint">
+                                <code>' AND 1=0 UNION SELECT id, username, password FROM auth_user --</code>
+                            </div>
+                            <p class="color-soft mt-4">You can also experiment with different queries to see what other
+                                data you can retrieve.</p>
+
+                        </div>
+                    </div>
+                    <h5 class="text-white mb-4">Secure Approach</h5>
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                        <div class="card-body p-5">
+                            <p class="color-soft">The secure implementation of the polls application prevents SQL
+                                injection by using <strong>parameterized queries</strong>,
+                                ensuring user input is always treated strictly as data. The secure parameterized
+                                server-side query for the search bar is:</p>
+                            <div class="lab-hint my-4">
+                                <code>cursor.execute(
+                                    """
+                                    SELECT id, question, category
+                                    FROM polls_poll
+                                    WHERE question LIKE %s
+                                    """,
+                                    [f"%{query}%"])</code>
+                            </div>
+
+                            <p class="color-soft">
+                                Parameterized queries prevent attackers from altering the structure of SQL statements.
+                            </p>
+
+                            <p class="color-soft"><strong class="text-white">Key takeaway:</strong> Never trust user
+                                input inside SQL queries. Always use
+                                parameterized queries or Django ORM filtering.</p>
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <a href="{% url 'labs:index' %}"
+                           class="btn btn-light">
+                            <i class="bi bi-arrow-left"></i> Back to Security Labs
+                        </a>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script>
+        document.getElementById("search-btn").addEventListener("click", function (e) {
+            e.preventDefault();
+            let query = document.getElementById("poll-search").value;
+            fetch(`{% url 'labs:sqlajax' %}?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    let html = "<code style='border:none!important'>";
+                    html += "{\n  results: [\n";
+                    data.results.forEach((r, index) => {
+                        html += `   {  id: ${r.id}, question: "${r.question}", category: "${r.category}" }`;
+                        if (index < data.results.length - 1) {
+                            html += ",";
+                        }
+                        html += "\n";
+                    });
+                    html += "  ]\n}";
+                    html += "</code>";
+                    document.getElementById("searchResults").innerHTML = html;
+                });
+        });
+    </script>
+{% endblock %}

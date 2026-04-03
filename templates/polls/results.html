@@ -1,0 +1,35 @@
+{% extends 'polls/base.html' %}
+{% block content %}
+    <div class="container px-5 mt-2 mb-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <section>
+                    <h5 class="text-white mb-4">{{ poll.question }}</h5>
+
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                        <div class="card-body p-5">
+
+                            <ol type="A" class="list-unstyled">
+
+                                {% for choice in poll.choices.all %}
+                                    <li class="mb-2 small">{{ choice.choice_text }}: &nbsp;&nbsp; <span
+                                            style="color:white">{{ choice.votes }} votes </span>
+                                    </li>
+                                {% endfor %}
+                            </ol>
+                            <div class="d-flex justify-content-evenly">
+                                <a href="{% url 'polls' %}">
+                                    <button class="btn mt-4 btn-light"><i class="bi bi-arrow-left"></i> Back to Polls</button>
+                                </a>
+                                <a href="{% url 'labs:index' %}">
+                                    <button class="btn mt-4 btn-light small">Vulnerable <i class="bi bi-arrow-right"></i></button>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

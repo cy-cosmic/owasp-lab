@@ -1,0 +1,32 @@
+{% extends 'polls/base.html' %}
+{% block content %}
+    <div class="container px-5 mt-2 mb-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <section>
+                    <h5 class="text-white mb-4">{{ poll.question }}</h5>
+                    {% if error_message %}
+                        <p style="color:#f85149" class="small"> {{ error_message }}</p>
+                    {% endif %}
+                    <div class="card border rounded-4 mb-5 bg-dark text-white ">
+                        <div class="card-body p-5">
+
+                            <form method="post" action="{% url 'vote' poll.id %}">
+                                {% csrf_token %}
+                                {% for choice in poll.choices.all %}
+                                    <p>
+                                        <input class="form-check-input"  name="choice" type="radio" id="{{ choice.id }}" value="{{ choice.id }}"/>
+                                        &nbsp;<label for="{{ choice.id }}">{{ choice.choice_text }}</label>
+                                    </p>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-light">Vote
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

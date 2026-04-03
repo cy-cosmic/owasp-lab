@@ -1,0 +1,190 @@
+{% extends 'labs/base.html' %}
+{% block head %}
+    <style>
+        .alert-left-amber {
+            background-color: #332a1d; /* dark amber-ish background */
+            color: #ffe8b5; /* soft text for readability */
+            border-left: 5px solid #ffb200; /* thick amber border */
+            border-top: none;
+            border-right: none;
+            border-bottom: none;
+            padding: 1rem 1rem 1rem 1.25rem; /* extra left padding */
+            border-radius: 0.375rem;
+
+        /* optional rounded corners
+</style>
+{% endblock %}
+{% block content %}
+    <div class="container px-5 mt-2 mb-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <section>
+                    <h5 class="text-white mb-4">Vulnerable Labs</h5>
+                    <p class="color-soft">A controlled environment to explore web vulnerabilities and learn secure
+                        coding practices. Only experiment within this sandbox.</p>
+                    <div class="alert-left-amber mb-4 small">
+                        ⚠️ <strong>Ethical Use Notice:</strong> All vulnerabilities in these labs are for educational
+                        purposes only.
+                    </div>
+                    <div class="row gx-3 ">
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Broken Access Control</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Users can access resources or functions they shouldn’t. Exploits may let
+                                        attackers view, modify, or delete data without permission.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:bac' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Cryptographic Failures</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Sensitive data (passwords, credit cards, personal info) isn't properly encrypted
+                                        or protected, making it easy to steal or manipulate</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:cryptfail' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        SQL Injection Lab</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Malicious data (e.g., SQL, NoSQL, OS commands) is sent to the interpreter,
+                                        allowing attackers to manipulate queries or execute commands.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:sqli' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Insecure Design</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Security weaknesses result from poor architecture or lack of secure design
+                                        patterns, leaving systems vulnerable by default.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:idesign' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Security Misconfigurations</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Improperly configured servers, databases, or frameworks expose sensitive data or functionality unintentionally.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:secmisconf' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Vulnerable and Outdated Components</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Using old or unpatched libraries, frameworks, or software introduces known exploits into the application.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:vulncomp' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Identification and Authentication Failures</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Flaws in login, password management, or session handling let attackers impersonate users or escalate privileges.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:idauthfail' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Software and Data Integrity Failures</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Applications rely on unverified or tampered code and data (e.g., CI/CD pipelines, deserialization issues), risking compromise.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:dtintegrityfail' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Security Logging and Monitoring Failures</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Insufficient logging and monitoring make it difficult to detect attacks, respond to incidents, or conduct forensic analysis.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:seclogmonfail' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-sm-12 col-md-6 col-lg-6">
+                            <div class="card border rounded-4 mb-5 bg-dark color-soft ">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-title text-white mb-3 fw-bold">
+                                        Server-Side Request Forgery</p>
+                                    <p class="card-text color-soft mb-4 small">
+                                        Attackers trick the server into making requests to unintended internal or external resources, potentially exposing sensitive systems.</p>
+                                    <div class="mt-auto">
+                                        <a href="{% url 'labs:ssrf' %}" class="btn btn-outline-light w-100">
+                                            Try the Lab</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

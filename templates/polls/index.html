@@ -1,0 +1,106 @@
+{% extends 'polls/base.html' %}
+{% block styles %}
+    <style>
+
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="container px-5 my-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-11 col-xl-9 col-xxl-8">
+                <section>
+
+
+                    <h4 class="text-white mb-4">
+                        OWASP Lab
+                    </h4>
+
+                    <p class="color-soft">
+                        Welcome to OWASP Lab, an educational web application designed to encourage secure development
+                        and demonstrate
+                        common web vulnerabilities in a hands-on environment.
+                    </p>
+                    <p class="color-soft">
+                        This application has <span class="text-white">two sections</span>:
+                    </p>
+
+                    <h5 class="text-white mt-4">
+                        1. Secure
+                    </h5>
+                    <p class="color-soft">In the secure section, users can:</p>
+                    <ul class="color-soft">
+                        <li>Explore the app’s functionality safely.</li>
+                        <li>Pick a poll, vote, and view aggregated results, including their own.</li>
+                        <li>Understand best practices for building secure web applications.</li>
+                    </ul>
+
+                    <h5 class="text-white mt-4">
+                        2. Vulnerable
+                    </h5>
+                    <p class="color-soft">The vulnerable section introduces common web vulnerabilities inspired by the
+                        <span
+                                class="text-white">OWASP Top 10</span> — the ten most critical security risks identified
+                        by the <strong
+                                class="text-white">Open Web Application Security Project (OWASP)</strong>. Here, users
+                        can:</p>
+
+                    <ul class="color-soft">
+                        <li>Interact with deliberately vulnerable features.</li>
+                        <li>Observe the impact of attacks such as SQL Injection, XSS, and IDOR, among others.</li>
+                        <li>Access clear explanations of each vulnerability.</li>
+                        <li>Learn practical strategies to mitigate these risks.</li>
+                    </ul>
+
+                    <h5 class="text-white mt-4">
+                        Environment Notes
+                    </h5>
+                    <ul class="color-soft">
+                        <li><strong class="text-white">Auto-login: </strong> Users are automatically logged in as
+                            <strong class="text-white">demo_user</strong> for convenience
+                        </li>
+                        <li><strong class="text-white">Auto-signoff: </strong> Users are automatically logged out after
+                            inactivity
+                        </li>
+                        <li><strong class="text-white">Safe experimentation: </strong> The environment is intentionally
+                            vulnerable for educational purposes only
+                        </li>
+                        <li><strong class="text-white">Disclaimer: </strong> This app is for learning and demonstration.
+                            Do <strong class="text-white">NOT</strong> expose the vulnerable section to sensitive data.
+                        </li>
+
+                    </ul>
+                    <h5 class="text-white mt-4">
+                        Technology Stack
+                    </h5>
+                    <ul class="color-soft">
+                        <li><strong class="text-white">Backend: </strong> Django (Python)</li>
+                        <li><strong class="text-white">Frontend: </strong> Bootstrap 5, HTML, CSS, JS</li>
+                        <li><strong class="text-white">Database: </strong> PostgreSQL</li>
+                        <li><strong class="text-white">Security Focus: </strong> OWASP 10, secure coding practices</li>
+
+                    </ul>
+                    <h5 class="text-white mt-4">
+                        Get Involved
+                    </h5>
+
+                    <p class="color-soft">
+                        Contributions, suggestions, collaboration, and discussions are welcome.
+                    </p>
+
+                    <ul class="color-soft">
+                        <li><strong class="text-white">Github: </strong> <a style="text-decoration: none;color: #66bfff"
+                                                                            target="_blank"
+                                                                            href="https://github.com/cy-cosmic/owasp-lab">https://github.com/cy-cosmic/owasp-lab</a>
+                        </li>
+                        <li><strong class="text-white">Email: </strong> <a href="mailto:hi@cyprian.dev"
+                                                                           style="text-decoration: none;color: #66bfff"
+                                                                           target="_blank">hi@cyprian.dev</a></li>
+
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
