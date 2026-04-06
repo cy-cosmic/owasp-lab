@@ -69,7 +69,7 @@ def sandbox_polls_detail(request, id):
     except SandboxPoll.DoesNotExist:
         poll = None
     if request.method == 'POST' and 'edit-poll' in request.POST:
-        if request.POST['edit-poll'] is not '':
+        if request.POST['edit-poll'] != "":
             new_poll_question =  request.POST['edit-poll']
             SandboxPoll.objects.filter(id=id).update(question=new_poll_question)
             messages.success(request, f'Poll updated successfully!')
