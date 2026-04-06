@@ -16,6 +16,9 @@ def index(request):
 
 def lab_entry(request):
     # already logged in? continue normally
+    # if first time after logout, delete previous session
+    # if login in, create new user session
+    # if new session, populate sandbox polls to interact with
     if request.user.is_authenticated:
         return redirect('polls')
 

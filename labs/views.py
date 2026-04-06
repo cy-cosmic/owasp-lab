@@ -1,18 +1,84 @@
+import secrets
+import string
+import uuid
+
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.hashers import make_password
 from django.db import connection
 from django.http import Http404, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
-from polls.views import lab_entry
+from labs.models import SandboxPoll
+from polls.models import User, Poll
 
 
-# Create your views here.
+def lab_entry(request):
+    # already logged in? continue normally
+    # if first time after logout, delete previous session
+    # if login in, create new user session
+    # if new session, populate sandbox polls to interact with
+    if request.user.is_authenticated:
+        return redirect('polls')
+
+    username = "demo_user"
+    alphabet = string.ascii_letters + string.digits
+    random_password = ''.join(secrets.choice(alphabet) for _ in range(16))
+
+    user, created = User.objects.get_or_create(username=username)
+
+    if created:
+        user.password = make_password(random_password)
+        user.save()
+
+    login(request, user)
+    # Create unique session_id
+    if "lab_session" not in request.session:
+        request.session["lab_session"] = str(uuid.uuid4())
+    session_id = request.session["lab_session"]
+
+    # CLEANUP: delete old sandbox polls for this session
+    SandboxPoll.objects.filter(session_id=session_id).delete()
+
+    # Create fresh sandbox polls
+    for poll in Poll.objects.filter(is_production=True):
+        SandboxPoll.objects.create(
+            original_poll=poll,
+            question=poll.question,
+            session_id=session_id,
+            is_modified=False
+        )
+
+    return redirect("labs:index")
+
+
 def index(request):
     lab_entry(request)
+
     return render(request, "labs/index.html", locals())
 
 
 def broken_access_control(request):
+    polls = SandboxPoll.objects.filter(session_id=request.session["lab_session"])
     return render(request, "labs/baccess.html", locals())
+
+
+def sandbox_polls_detail(request, id):
+    try:
+        poll = SandboxPoll.objects.get(id=id)
+    except SandboxPoll.DoesNotExist:
+        poll = None
+    if request.method == 'POST' and 'edit-poll' in request.POST:
+        if request.POST['edit-poll'] is not '':
+            new_poll_question =  request.POST['edit-poll']
+            SandboxPoll.objects.filter(id=id).update(question=new_poll_question)
+            messages.success(request, f'Poll updated successfully!')
+            return redirect('labs:sandbox_polls_detail', id)
+        else:
+            messages.error(request, 'You did not edit this poll!')
+            return redirect('labs:sandbox_polls_detail', id)
+    
+    return render(request, 'labs/sandbox-poll-detail.html', locals())
 
 
 def cryptographic_failures(request):

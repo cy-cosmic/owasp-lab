@@ -1,30 +1,234 @@
 {% extends 'labs/base.html' %}
+{% block head %}
+    <style>
+        .page-wrapper {
+            display: flex;
+            flex-direction: column; /* stack form, messages, results */
+            align-items: center; /* horizontal centering */
+            box-sizing: border-box;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            width: 100%;
+            max-width: 400px; /* optional fixed width */
+        }
+
+        .search-container input {
+            flex: 1; /* input takes remaining space */
+        }
+
+        .search-container input,
+        .search-container button {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .search-container input {
+            width: 250px; /* fixed width for input */
+        }
+
+
+        .instructions h2 {
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .instructions p {
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .lab-hint {
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border-left: 4px solid #999;
+            font-size: 13px;
+        }
+
+        .lab-hint code {
+            display: block;
+            margin-top: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: wrap;
+            overflow-wrap: anywhere;
+            word-break: normal;
+
+        }
+
+        .hint-note {
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+
+    </style>
+{% endblock %}
 {% block content %}
     <div class="container px-5 mt-2 mb-5">
         <div class="row gx-5 justify-content-center">
             <div class="col-lg-11 col-xl-9 col-xxl-8">
                 <section>
-                    <h5 class="text-white mb-4">404 - In Development</h5>
+                    <h4 class="text-white mb-4">Broken Access Control (BAC)</h4>
+                    <h5 class="text-white mb-4">BAC via Insecure Direct Object Reference (IDOR)</h5>
+
+                    <div class="card border rounded-4 mb-4 bg-dark color-soft ">
+                        <div class="card-body p-5">
+                            <p class="small color-soft">IDOR happens when an
+                                application exposes internal object IDs without properly checking whether a user is
+                                allowed to access them. </p>
+                            <p class="small color-soft">In this lab, you will try modifying poll IDs in the URL to
+                                access and edit data that should not belong to your session, then learn how proper
+                                access control prevents this vulnerability.</p>
+                            <p class="small color-soft"><strong class="text-white">Best approach:</strong> open two
+                                separate sessions of the app — for
+                                example, one on your phone and another on your laptop. Each session is automatically
+                                assigned its own sandbox poll records; view the list of polls on each device, then try
+                                changing the poll ID in the laptop’s URL to access and edit polls that belong to the
+                                phone session to demonstrate an IDOR vulnerability.</p>
+
+                            {% for poll in polls|slice:":1" %}
+                                <div class="lab-hint">
+                                    <strong>My First Poll:</strong>
+                                    <code>
+                                        <span class="fw-bold text-white">Question: </span>{{ poll.question }}<br>
+                                        <span class="fw-bold text-white">URL: </span> {% url 'labs:sandbox_polls_detail' poll.id %}
+
+                                    </code>
+                                </div>
+
+                            {% endfor %}
+
+                            <p id="idor-explained" class="m-0">&nbsp;</p>
+                        </div>
+
+                    </div>
+
+                    <h5 class="text-white mb-4">Insecure Direct Object Reference Explained</h5>
 
                     <div class="card border rounded-4 mb-5 bg-dark color-soft ">
-                        <div class="card-body p-5">
-                            <p class="small color-soft">At the moment, only these labs are available:</p>
-                            <ul class="small color-soft">
-                                <li>
-                                    <a href="{% url 'labs:sqli' %}" onmouseover="this.style.color='#66bfff'"
-                                       onmouseout="this.style.color='#d6d6d6'"
-                                       style="text-decoration: none!important;color: #d6d6d6">SQL Injection</a>
-                                </li>
+                        <div class="card-body p-5 small">
+                            <p class="color-soft">Insecure Direct Object Reference (IDOR) is a type of Broken Access
+                                Control (BAC) vulnerability that occurs when an application exposes internal object
+                                identifiers (such as database IDs) without verifying whether the current user is
+                                authorized to access them. Instead of enforcing ownership checks, the application trusts
+                                user-supplied references, allowing attackers to access or manipulate resources belonging
+                                to other users</p>
+                            <p class="color-soft">
+                                Attackers can manipulate object identifiers to:
+                            </p>
+                            <ul class="color-soft">
+                                <li>access other users' private data</li>
+                                <li>modify records they do not own</li>
+                                <li>perform unauthorized actions</li>
+                                <li>enumerate sensitive resources</li>
+                                <li>escalate privileges indirectly</li>
                             </ul>
+                            <p class="color-soft">IDOR is one of the most common real-world access control failures
+                                because developers often assume that authentication alone is sufficient, without
+                                validating object-level permissions.</p>
+                            <p class="color-soft">Other BAC vulnerabilities include:</p>
+                            <ul class="color-soft">
+                                <li>privilege escalation (user => admin)</li>
+                                <li>forced browsing of restricted endpoints</li>
+                                <li>missing role checks</li>
+                                <li>insecure API object references</li>
+                                <li>bypassing multi-tenant boundaries</li>
+                            </ul>
+                            <p class="color-soft"> All BAC vulnerabilities share one core issue: the application fails
+                                to properly verify that a user is allowed to perform an action on a specific
+                                resource.</p>
+
+                            <h6 class="text-white fw-bold mt-4 mb-2">Vulnerable Object Reference Example</h6>
+                            <p>When retrieving a poll, a developer may implement the following server-side logic:</p>
+                            <div class="lab-hint">
+                                <code>
+                                    poll = SandboxPoll.objects.get(id=poll_id)
+                                </code>
+                            </div>
+                            <p class="color-soft my-4">
+                                Because the query only checks the poll's ID, any user who can guess or enumerate IDs may
+                                access other users' sandbox records.
+                            </p>
+                            <p class="color-soft mb-4">
+                                For example, changing the URL:
+                            </p>
+                            <div class="lab-hint">
+                                <code>/labs/baccess/polls/detail/2/</code>
+                            </div>
+                            <p class="color-soft my-2">
+                                to
+                            </p>
+                            <div class="lab-hint">
+                                <code>/labs/baccess/polls/detail/11/</code>
+                            </div>
+                            <p class="color-soft mt-4"> may grant access to objects (polls) owned by other users as has
+                                been demonstrated in this lab.</p>
 
                         </div>
                     </div>
+                    <h5 class="text-white mb-4">Secure Approach</h5>
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft small">
+                        <div class="card-body p-5">
+                            <p class="color-soft">The secure implementation enforces object-level authorization by
+                                ensuring users can only access resources tied to their session. For instance:</p>
+                            <div class="lab-hint my-4">
+                                <code>poll = SandboxPoll.objects.get( id=poll_id,
+                                    session_id=request.session["lab_session"])</code>
+                            </div>
+
+                            <p class="color-soft">
+                                By validating both the object identifier and the session ownership, the application
+                                ensures users can only interact with resources created within their own sandbox
+                                environment.
+                            </p>
+                            <p class="color-soft">This prevents unauthorized data exposure even when object IDs are
+                                predictable or sequential.
+                            </p>
+
+                            <p class="color-soft"><strong class="text-white">Key takeaway:</strong> Never trust
+                                user-controlled object identifiers alone. Always verify that the requested resource
+                                belongs to the current user, session, or authorized role before allowing access.</p>
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <a href="{% url 'labs:index' %}"
+                           class="btn btn-light">
+                            <i class="bi bi-arrow-left"></i> Back to Security Labs
+                        </a>
+                    </div>
+
                 </section>
             </div>
         </div>
     </div>
 {% endblock %}
-
-
-
-
+{% block scripts %}
+    <script>
+        document.getElementById("search-btn").addEventListener("click", function (e) {
+            e.preventDefault();
+            let query = document.getElementById("poll-search").value;
+            fetch(`{% url 'labs:sqlajax' %}?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    let html = "<code style='border:none!important'>";
+                    html += "{\n  results: [\n";
+                    data.results.forEach((r, index) => {
+                        html += `   {  id: ${r.id}, question: "${r.question}", category: "${r.category}" }`;
+                        if (index < data.results.length - 1) {
+                            html += ",";
+                        }
+                        html += "\n";
+                    });
+                    html += "  ]\n}";
+                    html += "</code>";
+                    document.getElementById("searchResults").innerHTML = html;
+                });
+        });
+    </script>
+{% endblock %}

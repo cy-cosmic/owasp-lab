@@ -6,6 +6,7 @@ app_name = "labs"
 urlpatterns = [
     path("", views.index, name="index"),
     path("baccess/", views.broken_access_control, name="bac"),
+    path("baccess/polls/detail/<int:id>/", views.sandbox_polls_detail, name="sandbox_polls_detail"),
     path("cryptfail/", views.cryptographic_failures, name="cryptfail"),
     path("sqli/", views.sql_injection, name="sqli"),
     path('sqli/sqlajax/', views.sqlajax, name='sqlajax'),
