@@ -11,6 +11,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from labs.models import SandboxPoll
 from polls.models import User, Poll
+from django.http import HttpResponse
+from .utils import sign_role, verify_role
 
 
 def lab_entry(request):
@@ -70,14 +72,14 @@ def sandbox_polls_detail(request, id):
         poll = None
     if request.method == 'POST' and 'edit-poll' in request.POST:
         if request.POST['edit-poll'] != "":
-            new_poll_question =  request.POST['edit-poll']
+            new_poll_question = request.POST['edit-poll']
             SandboxPoll.objects.filter(id=id).update(question=new_poll_question)
             messages.success(request, f'Poll updated successfully!')
             return redirect('labs:sandbox_polls_detail', id)
         else:
             messages.error(request, 'You did not edit this poll!')
             return redirect('labs:sandbox_polls_detail', id)
-    
+
     return render(request, 'labs/sandbox-poll-detail.html', locals())
 
 
@@ -138,3 +140,95 @@ def security_logs_and_monitoring_failures(request):
 
 def server_side_request_forgery(request):
     return render(request, "labs/ssrf.html", locals())
+
+
+def crypt_fail_lab_login(request):
+    payload = {
+        "user_id": 101,
+        "role": "guest"
+    }
+    cookie = sign_role(payload)
+
+    response = HttpResponse("""
+        <h3>Guest Access Granted</h3>
+        <p>You now have access to sandbox content.</p>
+        <a href='/labs/crypto/dashboard/'>Continue to dashboard</a>
+    """)
+
+    response.set_cookie(
+        "lab_auth",
+        cookie,
+        httponly=False  # intentionally readable in devtools
+    )
+    return response
+
+
+def cryptographic_failures_sandbox(request):
+    cookie_name = "lab_auth"
+    cookie = request.COOKIES.get(cookie_name)
+
+    role = "guest"
+    user_id = 101
+    panel_title = "Sandbox Environment"
+    message = "You are currently browsing with limited privileges."
+    restricted_notice = "Administrative features are restricted."
+    flag = None
+    response = None
+    # create guest cookie if none exists
+    if not cookie:
+        payload = {
+            "user_id": 101,
+            "role": "guest"
+        }
+        cookie = sign_role(payload)
+        response = render(
+            request,
+            "labs/cryptfailsandbox.html",
+            {
+                "user_id": user_id,
+                "role": role,
+                "panel_title": panel_title,
+                "message": message,
+                "restricted_notice": restricted_notice,
+                "flag": flag
+            }
+        )
+
+        response.set_cookie(
+            cookie_name,
+            cookie,
+            httponly=False  # visible in DevTools intentionally
+        )
+
+        return response
+
+    # cookie exists → evaluate role
+    try:
+
+        data = verify_role(cookie)
+
+        if data.get("role") == "admin":
+            user_id = user_id
+            role = "admin"
+            panel_title = "Admin Control Panel"
+            message = "Elevated privileges detected."
+            restricted_notice = "Full administrative functionality enabled."
+            flag = "crypto_privilege_escalation_success"
+
+    except Exception:
+        panel_title = "Invalid Session"
+        message = "The session cookie could not be verified."
+        restricted_notice = "Try generating a new session."
+
+    return render(
+        request,
+        "labs/cryptfailsandbox.html",
+        {
+            "user_id": user_id,
+            "role": role,
+            "panel_title": panel_title,
+            "message": message,
+            "restricted_notice": restricted_notice,
+            "flag": flag
+        }
+    )

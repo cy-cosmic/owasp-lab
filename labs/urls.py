@@ -8,6 +8,7 @@ urlpatterns = [
     path("baccess/", views.broken_access_control, name="bac"),
     path("baccess/polls/detail/<int:id>/", views.sandbox_polls_detail, name="sandbox_polls_detail"),
     path("cryptfail/", views.cryptographic_failures, name="cryptfail"),
+    path("cryptfail/sandbox/", views.cryptographic_failures_sandbox, name="cryptfail_sandbox"),
     path("sqli/", views.sql_injection, name="sqli"),
     path('sqli/sqlajax/', views.sqlajax, name='sqlajax'),
     path("idesign/", views.insecure_design, name="idesign"),

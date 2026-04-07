@@ -78,22 +78,24 @@
 
                     <div class="card border rounded-4 mb-4 bg-dark color-soft ">
                         <div class="card-body p-5">
-                            <p class="small color-soft">Many web applications store sensitive information, like user
-                                roles or permissions, in client-side cookies or tokens. If these values are
-                                cryptographically signed but the signing key is exposed or weak, attackers can modify
-                                the data to escalate privileges and bypass access controls. </p>
-                            <p class="small color-soft">In this lab, you will inspect a signed cookie used for
-                                authorization, discover the exposed signing key, and modify the cookie to gain
-                                admin-level access — demonstrating how improper key management leads to real-world
-                                security risks.</p>
-                            <p class="small color-soft">To begin, click the button below to log in as 'guest'
-                                user to access role-restricted content. The task is to escalate privileges and view content
-                                meant for user 'admin'.
-                            </p>
-                            <div class="d-flex justify-content-center mt-5">
-                                <a class="btn btn-small btn-light"
-                                   href="{% url 'labs:cryptfail_sandbox' %}">Login as Guest</a>
+                            <div class="small color-soft">
+                                {{ panel_title }}
+                                <ul>
+                                    <li><span class="text-white">User ID</span>: {{ user_id }}</li>
+                                    <li><span class="text-white">Role</span>: {{ role }}</li>
+                                    <li><span class="text-white">Message</span>: {{ message }}</li>
+                                </ul>
+                                {{ restricted_notice }}
+                                {% if flag %}
+                                    <hr>
+                                    <h3>Flag</h3>
+                                    <p>
+                                        <strong>{{ flag }}</strong>
+                                    </p>
+
+                                {% endif %}
                             </div>
+
                         </div>
                     </div>
                 </section>
