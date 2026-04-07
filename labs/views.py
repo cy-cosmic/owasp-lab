@@ -1,3 +1,4 @@
+import random
 import secrets
 import string
 import uuid
@@ -5,6 +6,7 @@ import uuid
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 from django.db import connection
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -209,3 +211,36 @@ def cryptographic_failures_sandbox(request):
             "flag": flag
         }
     )
+
+
+def insecure_design_profile_sandbox(request):
+    user = User.objects.first()  # demo_user is the only user
+    # generate OTP
+    if request.method == "POST" and request.POST.get("send-otp") == "sendotp":
+        otp = str(random.randint(100000, 999999))
+        request.session["password_reset_otp"] = otp
+        request.session["otp_user"] = user.username
+        send_mail(
+            subject="Your password reset token",
+            message=f"""
+            Hello {user.username}
+            Your password reset token is: {otp}.
+            If you did not request this, ignore this email.""",
+            from_email=None,
+            recipient_list=[user.email], )
+        messages.success(request,
+                         "A password reset token was sent to your email. Enter it in the input below to reset your password."
+                         )
+
+        return redirect("labs:idesign_profile_sandbox")
+    # verify OTP (vulnerable)
+    if request.method == "POST" and request.POST.get("verify-otp"):
+        submitted_otp = request.POST.get("otp")
+        if submitted_otp == request.session.get("password_reset_otp"):
+            messages.success(request, "OTP verified successfully. Password changed.")
+        else:
+            messages.error(request, "Invalid OTP")
+        return redirect("labs:idesign_profile_sandbox")
+    return render(request, "labs/idesign-profile.html", locals())
+
+

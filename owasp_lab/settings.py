@@ -19,6 +19,9 @@ SESSION_COOKIE_AGE = 1800
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
 
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "security@owasp-labs.dev"
+
 CSRF_TRUSTED_ORIGINS = [
     'https://owasp.cyprian.dev',
 ]

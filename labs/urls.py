@@ -12,6 +12,7 @@ urlpatterns = [
     path("sqli/", views.sql_injection, name="sqli"),
     path('sqli/sqlajax/', views.sqlajax, name='sqlajax'),
     path("idesign/", views.insecure_design, name="idesign"),
+    path("idesign/sandbox/profile/", views.insecure_design_profile_sandbox, name="idesign_profile_sandbox"),
     path("secmisconf/", views.security_misconfiguration, name="secmisconf"),
     path("vulncomp/", views.vulnerable_and_outdated_components, name="vulncomp"),
     path("idauthfail/", views.identification_and_auth_failures, name="idauthfail"),
