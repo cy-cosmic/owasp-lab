@@ -87,14 +87,82 @@
                                 admin-level access — demonstrating how improper key management leads to real-world
                                 security risks.</p>
                             <p class="small color-soft">To begin, click the button below to log in as 'guest'
-                                user to access role-restricted content. The task is to escalate privileges and view content
+                                user to access role-restricted content. The task is to escalate privileges and view
+                                content
                                 meant for user 'admin'.
                             </p>
                             <div class="d-flex justify-content-center mt-5">
-                                <a class="btn btn-small btn-light"
+                                <a class="btn btn-sm btn-light small"
                                    href="{% url 'labs:cryptfail_sandbox' %}">Login as Guest</a>
+
                             </div>
+                            <p id="cryptfail_explained" class="m-0 p-0"></p>
                         </div>
+                    </div>
+                    <h5 class="text-white mb-4" >Cryptographic Failures Explained</h5>
+                    <div class="card border rounded-4 mb-4 bg-dark color-soft small ">
+                        <div class="card-body p-5">
+                            <p class="mb-2">
+                                Cryptographic Failures occur when an application improperly implements encryption,
+                                hashing, or signing, resulting in exposure or manipulation of sensitive data. One common
+                                example is the use of weak or exposed signing keys, which allow attackers to forge
+                                trusted values such as authentication cookies, password reset tokens, or API parameters
+                            </p>
+                            <p class="mb-2">
+                                Applications often rely on cryptographic signing to ensure that client-side data has not
+                                been tampered with. However, if the signing key becomes exposed through source code
+                                repositories, configuration files, version control history, or backup files, attackers
+                                can generate valid signatures for modified data. Because the server trusts correctly
+                                signed values, this can lead to authentication bypass or privilege escalation
+                            </p>
+                            <p class="mb-2">
+                                Attackers may exploit exposed signing keys to:
+                            </p>
+                            <ul>
+                                <li>modify authentication cookies</li>
+                                <li>impersonate other users</li>
+                                <li>escalate privileges</li>
+                                <li>bypass access control checks</li>
+                                <li>forge password reset tokens</li>
+                                <li>tamper with API requests parameters</li>
+                            </ul>
+                            <p class="mb-2">
+                                Common causes of cryptographic failures include:
+                            </p>
+                            <ul>
+                                <li>hard-coded secrets in source code</li>
+                                <li>exposed .env and configuration files</li>
+                                <li>commiting keys to Git repositories</li>
+                                <li>weak or predictable secret keys</li>
+                                <li>reusing development keys in production</li>
+                                <li>misunderstanding the difference between signing and encryption.</li>
+                            </ul>
+                            <p class="mt-2">Signing protects integrity but does not hide the data. If sensitive values
+                                are stored client-side without encryption, attackers may be able to read or manipulate
+                                them</p>
+                        </div>
+                    </div>
+                    <h5 class="text-white mb-4">Secure Approach</h5>
+                    <div class="card border rounded-4 mb-5 bg-dark color-soft small">
+                        <div class="card-body p-5">
+                            <p class="mb-2">
+                                Secure implementations protect cryptographic secrets using environment variables or
+                                secret managers and avoid storing sensitive authorization data in client-controlled
+                                locationsSecure implementations protect cryptographic secrets using environment
+                                variables or secret managers and avoid storing sensitive authorization data in
+                                client-controlled locations.
+                            </p>
+                            <p class="mb-2">
+                                <strong>Key takeaway:</strong> Cryptography only works if secrets remain secret.
+                                Protect signing keys, rotate compromised secrets, and never trust client-side data for
+                                authorization decisions without proper server-side validation.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mb-4">
+                        <a href="{% url 'labs:index' %}" class="btn btn-light">
+                            <i class="bi bi-arrow-left"></i> Back to Security Labs
+                        </a>
                     </div>
                 </section>
 

@@ -142,27 +142,6 @@ def server_side_request_forgery(request):
     return render(request, "labs/ssrf.html", locals())
 
 
-def crypt_fail_lab_login(request):
-    payload = {
-        "user_id": 101,
-        "role": "guest"
-    }
-    cookie = sign_role(payload)
-
-    response = HttpResponse("""
-        <h3>Guest Access Granted</h3>
-        <p>You now have access to sandbox content.</p>
-        <a href='/labs/crypto/dashboard/'>Continue to dashboard</a>
-    """)
-
-    response.set_cookie(
-        "lab_auth",
-        cookie,
-        httponly=False  # intentionally readable in devtools
-    )
-    return response
-
-
 def cryptographic_failures_sandbox(request):
     cookie_name = "lab_auth"
     cookie = request.COOKIES.get(cookie_name)
@@ -204,9 +183,7 @@ def cryptographic_failures_sandbox(request):
 
     # cookie exists → evaluate role
     try:
-
         data = verify_role(cookie)
-
         if data.get("role") == "admin":
             user_id = user_id
             role = "admin"

