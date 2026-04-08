@@ -217,7 +217,7 @@ def insecure_design_profile_sandbox(request):
     user = User.objects.first()  # demo_user is the only user
     # generate OTP
     if request.method == "POST" and request.POST.get("send-otp") == "sendotp":
-        otp = str(random.randint(100000, 999999))
+        otp = str(random.randint(1000, 6999))
         request.session["password_reset_otp"] = otp
         request.session["otp_user"] = user.username
         send_mail(
